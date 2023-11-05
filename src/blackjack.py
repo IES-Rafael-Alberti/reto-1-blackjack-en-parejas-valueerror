@@ -3,15 +3,28 @@ import os
 
 
 def borrar_Consola():
-    """Identifica el sistema operativo del usuario y ejecuta el commando correspondiente al sistema operativo para limpiar el terminal"""
+    """Clears the console.
+
+    In the os module if the Operating system is Windows 'os.name' will be 'nt', if the operating system is mac or linux-based it will be 'posix' 
+    """
     if os.name == "nt":
-        os.system("cls")
+        return os.system("cls")
     else:
-        os.system("clear")
+        return os.system("clear")
 
 
 def pedir_Opcion(limite: int):
-    """Recibe un número limite y pide un input al usuario hasta que el resultado de dicho input sea un número entero entre 1 y el número limite"""
+    """Takes a user string input and checks if it is an integer within the specified range.
+    
+    While the user input does not match an integer within the specified range it will keep asking the user for an input.
+    
+    Args:
+        limite:
+            An integer representing the maximum number acceptable.
+    
+    Returns:
+        The user input as a string once all conditions have been met.
+    """
     loop = True
     while loop == True:
         opcion = input(f"Introuduzca un número entre 1 y {limite}: ")
@@ -33,7 +46,19 @@ def barajar_Baraja(
     barajaNumeros: str,
     barajaPalos: str,
 ):
-    """Recibe una string con todos los números posibles de la baraja y otra con todos los palos posibles. Despues las ordena aleatoriamente en 2 nuevas strings y las devuelve"""
+    """Shuffles a deck of cards and saves it into a string.
+    
+    Takes a string made up of all the possible numbers in a deck of cards repeated 4 times and a string made up of all the possible colors in a deck of cards repeated 13 times and shuffles them into a new string which represents a shuffled deck.
+
+    Args:
+        barajaNumeros:
+            A string made up of all the possible numbers in a deck of cards.
+        barajaPalos:
+            A string made up of all the possible colors in a deck of cards repeated for each card of the deck.
+    
+    Returns:
+        A string made up of all the numbers in the deck shuffled followed by all the colors in the deck shuffled.
+    """
     barajaNumerosBarajada = ""
     barajaPalosBarajada = ""
     for i in range(1, 53):
@@ -58,8 +83,30 @@ def dar_Carta(
     asCambiadoJugador: bool,
     asManoJugador: bool,
 ):
-    """Recibe 2 strings correspondientes a los números de la baraja, un pointer de la última carta repartida, 2 strings correspondientes a la mano del jugador y 2 booleanos correspondientes a si el jugador tiene un as en su mano y si vale 11 o 1.
-    La función toma el valor correspondiente de la baraja según el contador y lo añade a la string de la mano del jugador, además añade el valor de la nueva carta al valor total de la mano del jugador y le resta 10 si tiene un as en su mano y el total sobrepasa 21"""
+    """Gives a player a card.
+
+    Takes 2 strings representing the playing deck shuffled as well as the value of the players hand and a counter for which card is the next in play, with that it adds the new card to the players hand and calculates the new value of the players hand depending on which card the player has been dealt. It also takes 2 bool values which represent whether the player has an ace in his hand or not and whether that ace's value is 11 or 1.
+
+    Args:
+        barajaNumerosBarajada:
+            A string made up of all the possible numbers in a deck of cards shuffled.  
+        barajaPalosBarajada:
+            A string made up of all the possible colors in a deck of cards repeated for each card of the deck shuffled. 
+        contadorNumeroCarta:
+            An integer that represents how many cards have been dealt. 
+        cartasJugadorNumero: 
+            A string made up of the card numbers in the player's hand.
+        cartasJugadorPalo:
+            A string made up of the card colors in the player's hand. 
+        valorManoJugador:
+            An integer that represents the current value of the player's hand. 
+        asCambiadoJugador:
+            A boolean that represents whether the player has changed the value of the ace in his hand from 11 to 1. 
+        asManoJugador: 
+            A boolean that represents whether the player has an ace in his hand or not. 
+    Returns:
+       A string made up of the new contadorNumeroCarta, the new cartasJugadorNumero, the new cartasJugadorPalo, the new ValorManoJugador, the new or unchanged asCambiadoJugador and asManoJugador with a '&' in between each. 
+    """
     cartasJugadorNumero += barajaNumerosBarajada[contadorNumeroCarta]
     cartasJugadorPalo += barajaPalosBarajada[contadorNumeroCarta]
     if (
@@ -122,7 +169,25 @@ def imprimir_Mano(
     asManoJugador: bool,
     valorManoJugador: int,
 ):
-    """Recibe 2 strings que representan las cartas en la mano de un jugador. Dependiendo el valor de las cartas genera una string con sus nombres"""
+    """Makes a string with the value of the players hand and all the name of their cards.
+
+    Takes 2 strings representing the player's current hand as well as the value of the players hand and 2 bool values which represent whether the player has an ace in his hand or not and whether that ace's value is 11 or 1, then it creates a new string whith the names of each card in the hand and the value of said hand.
+
+    Args:
+        cartasJugadorNumero: 
+            A string made up of the card numbers in the player's hand.
+        cartasJugadorPalo:
+            A string made up of the card colors in the player's hand.  
+        asCambiadoJugador:
+            A boolean that represents whether the player has changed the value of the ace in his hand from 11 to 1. 
+        asManoJugador: 
+            A boolean that represents whether the player has an ace in his hand or not. 
+        valorManoJugador:
+            An integer that represents the current value of the player's hand.
+
+    Returns:
+       A string made up of all the player's cards and the value of those cards.
+    """
     manoStr = ""
     for i in range(0, len(cartasJugadorNumero)):
         if cartasJugadorNumero[i] == "A":
@@ -198,7 +263,25 @@ def comprobar_Ganador(
     nombreJ1: str,
     nombreJ2: str,
 ):
-    """Recibe los valores de las manos de los jugadores y tras comprobar cual es mayor y si sobrepasan 21 devuelve 2 cadenas de caracteres con el texto de victoria o empate"""
+    """Checks for the winnig player and creates a string with the winning text.
+
+    Takes the value of both player's hands and their names, checks who the winner is and which round it is and creates a string with the winner's name, the round it is and a winning text.
+
+    Args:
+        valorManoJugador1:
+            An integer that represents the value of player1's hand.
+        valorManoJugador2:
+            An integer that represents the value of player2's hand.
+        ronda:
+            An integer that represents the round number.
+        nombreJ1:
+            A string that represents player1's name.
+        nombreJ2:
+            A string that represents player2's name.
+    
+    Returns:
+        A string with the winner's name, the round it is and a winning text
+    """
     if valorManoJugador1 > 21 or valorManoJugador2 > 21:
         if valorManoJugador1 > 21 and valorManoJugador2 > 21:
             ganadorStr1 = f"JUEGO TERMINADO - Ronda {ronda}"
@@ -242,9 +325,12 @@ def main():
 
     # Crea 2 cadenas de caracteres, una con todos los posibles numeros de la baraja y otra con la inicial de cada palo de la baraja repetida tantas veces como cartas de dicho palo hay. De esta forma podemos generar una carta juntando las posiciones equivalentes de cada cadena de caracteres. Ejemplo: barajaNumeros[2] + barajaPalos[2] == 2C. 2C equivale al 2 de corazones.
 
-    barajaNumeros = "A234567890JQKA234567890JQKA234567890JQKA234567890JQK"  # Numeros de la baraja ordenada
-    barajaPalos = "CCCCCCCCCCCCCTTTTTTTTTTTTTPPPPPPPPPPPPPDDDDDDDDDDDDD"  # Palos de la baraja ordenada
-    contadorNumeroCarta = 0  # Numero contador de la siguiente carta que tenemos que repartir, nos servira tambien para saber cuando hemos repartido mas del 50% de la baraja y tenemos que volver a barajar
+     # Numeros de la baraja ordenada
+    barajaNumeros = "A234567890JQKA234567890JQKA234567890JQKA234567890JQK"
+    # Palos de la baraja ordenada
+    barajaPalos = "CCCCCCCCCCCCCTTTTTTTTTTTTTPPPPPPPPPPPPPDDDDDDDDDDDDD"
+    # Numero contador de la siguiente carta que tenemos que repartir, nos servira tambien para saber cuando hemos repartido mas del 50% de la baraja y tenemos que volver a barajar
+    contadorNumeroCarta = 0 
 
     # Genera dos nuevas cadenas de caracteres iguales a la anterior pero con los caracteres ordenados de forma aleatoria con respecto a la anterior. La posicion de cada caracter en la cadena numeros equivale a la posicion de su palo de la baraja, de tal forma que no puede generarse la misma carta 2 veces.
 
@@ -281,7 +367,8 @@ def main():
     # Creamos un bucle while que mantendra el programa en funcionamiento mientras el usuario no inserte la opcion de cerrado del programa.
 
     partidasJugadas = 0
-    final = False  # Variable booleana que usaremos para saber cuando debemos cerrar el programa, el bucle se mantendra activo mientras su valor sea False.
+    # Variable booleana que usaremos para saber cuando debemos cerrar el programa, el bucle se mantendra activo mientras su valor sea False.
+    final = False  
     while final == False:
         if partidasJugadas != 0:
             print(
